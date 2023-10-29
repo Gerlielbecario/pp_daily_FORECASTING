@@ -5,14 +5,24 @@ import matplotlib.pyplot as plt
 import numpy as np
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
-
+import os
+##############
 ##############
 
-path = 'apcp_sfc_2013031600_c00.grib2'
+#Archivo .grib que deseamos leer
+file = "apcp_sfc_2009102400_c00.grib2"
 
-#Open file
+#Carpeta donde se encuentra el archivo
+folder = '/home/fernando.huaranca/datos/DATOS_REFORECAST/apcp_sfc'
+
+#Ruta del archivo
+path = os.path.join(folder,file)
+print(path)
+
+##########
+
 ds = xr.open_dataset(path)
-
+###
 #Extraigo los datos de la variable Total Precipitation
 var = ds.tp
 
@@ -41,4 +51,11 @@ lon = ds.longitude
 
 ##Generamos un codigo que almacena estos datos
 
-np.savez('pp_daily',pp_daily= pp,latitudes=lat,longitudes=lon)
+# Ruta completa del archivo donde guardar los datos
+file_path = '/home/fernando.huaranca/test_forecast/pp_daily.npz'
+
+# Guardar los arreglos en el archivo
+
+np.savez(file_path,pp_daily= pp,latitudes=lat,longitudes=lon)
+
+print(tiempo_0.values)

@@ -10,7 +10,7 @@ import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 
 #Directorio
-path = 'pp_daily.npz'
+path = '/home/fernando.huaranca/test_forecast/pp_daily.npz'
 
 #Cargamos el archivo
 datos = np.load(path)
