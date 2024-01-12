@@ -10,7 +10,7 @@ import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 
 #Directorio
-path = '/home/fernando.huaranca/test_forecast/pp_daily.npz'
+path = '/home/fernando.huaranca/datosmunin3/GFS_24hs/20-01-2016.npz'
 
 #Cargamos el archivo
 datos = np.load(path)
@@ -33,10 +33,10 @@ lon = datos['longitudes']
 
 #Latitudes y longitudes (box)
 
-lat_north = 12
-lat_south = -55
-lon_east = 340
-lon_west = 260
+lat_north = -0
+lat_south = -10.5
+lon_east = 295
+lon_west = 284.5
 
 #latitudes
 lat_index = np.flatnonzero((lat <lat_north) & (lat > lat_south))
@@ -48,7 +48,7 @@ lon_index = np.flatnonzero((lon > lon_west) & (lon < lon_east))
 suda = pp[lat_index[0]:lat_index[-1],lon_index[0]:lon_index[-1]]
 lat = lat[lat_index]
 lon = lon[lon_index]
-print(suda.shape)
+print('Las dimensiones del array son: ',suda.shape)
 
 #Una vez abierto el archivo y extrayendo las dimensiones podemos plotearlo
 
