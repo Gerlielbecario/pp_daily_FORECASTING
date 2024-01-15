@@ -51,8 +51,8 @@ print('Lista de archivos cargada')
 #----Limites para el subset-------------------------------
 
 #Latitudes y longitudes (box)
-lat_north = 12
-lat_south = -55
+lat_north = 15
+lat_south = -65
 lon_east = 340
 lon_west = 260
 
