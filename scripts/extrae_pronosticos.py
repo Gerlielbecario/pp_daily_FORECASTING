@@ -53,7 +53,7 @@ print('Lista de archivos cargada')
 #Latitudes y longitudes (box)
 lat_north = 15
 lat_south = -65
-lon_east = 340
+lon_east = 330
 lon_west = 260
 
 #---TIEMPOS---------------------------
