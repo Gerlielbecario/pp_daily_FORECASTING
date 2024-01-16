@@ -153,7 +153,7 @@ for file in FileS:
         print('Inicia almacenamiento de la matriz: ',fecha_p_24)
 
         # Ruta completa del archivo donde guardar los datos
-        out_path = f'/home/fernando.huaranca/datosmunin3/GFS_24hs/{fecha_p_24}.npz'
+        out_path = f'/home/fernando.huaranca/datosmunin3/GFS_24hs/GFS_R0.25_{fecha_p_24}.npz'
 
         # Guardar los arreglos en el archivo
         np.savez(out_path,pp_daily = pp, latitudes = lat,longitudes = lon,inicio_corrida=ref_time,forecast_24=fecha_p_24)
