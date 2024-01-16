@@ -111,9 +111,6 @@ for file in FileS:
         #formato np.str_
         fecha_p_24 = np.datetime_as_string(fecha_p_24,unit='D')
 
-        #Transformamos nuestra fecha a string en formato DD-MM-YYYY
-        fecha_p_24 = datetime.strptime(fecha_p_24, '%Y-%m-%d').strftime('%d-%m-%Y')
-
         ######################################################
 
         #-------Subset de las latitudes------------
