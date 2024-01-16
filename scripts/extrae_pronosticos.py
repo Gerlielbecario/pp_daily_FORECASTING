@@ -48,6 +48,9 @@ total = len(FileS)
 
 print('Lista de archivos cargada')
 
+#Variables booleana para ayudar al bucle
+mi_inicio = True
+
 #----Limites para el subset-------------------------------
 
 #Latitudes y longitudes (box)
@@ -74,19 +77,40 @@ for file in FileS:
     print('El porcentaje es: ',porcentaje,'%')
 
     try:
+        
         #Abrimos el archivo grib como dataset
         ds = xr.open_dataset(path)
-
-        #------Extraccion de variables de nuestro grib-----
-
-        print('Inicio extraccion de variables del dataset')
 
         #Extraigo array de precipitaciones
         var = ds.tp.values
 
-        #Extraigo latitudes y longitudes
-        lat = ds.tp.latitude.values
-        lon = ds.tp.longitude.values
+        #Al leer el primer archivo mi_inicio es True.
+        #A este archivo se le extraen las latitudes y longitudes  
+        #que seran las mismas para todos los archivos
+        if mi_inicio==True:
+            
+            print('Inicio extraccion de Latitudes y Longitudes del DS')
+
+            #Extraigo latitudes y longitudes
+            lat = ds.tp.latitude.values
+            lon = ds.tp.longitude.values
+
+            #Recorta la seccion de sudamerica o la que se desee
+            #LATITUDES
+            lat_index = np.flatnonzero((lat <lat_north) & (lat > lat_south))
+
+            lat = lat[lat_index]
+
+            #LONGITUDES
+            lon_index = np.flatnonzero((lon > lon_west) & (lon < lon_east))
+
+            lon = lon[lon_index]
+
+            #Shape para la matriz de ceros
+            row = lat.shape[0]
+            col = lon.shape[0]
+
+            mi_inicio = False
 
         #Extraccion de steps en formato de horas
         horas = ds.step.values/np.timedelta64(1, 'h')
@@ -111,26 +135,7 @@ for file in FileS:
         #formato np.str_
         fecha_p_24 = np.datetime_as_string(fecha_p_24,unit='D')
 
-        ######################################################
-
-        #-------Subset de las latitudes------------
-        print('Inicia recorte de sudamerica')
-
-        #Recorta la seccion de sudamerica
-        lat_index = np.flatnonzero((lat <lat_north) & (lat > lat_south))
-
-        lat = lat[lat_index]
-
-        #LONGITUDES
-        lon_index = np.flatnonzero((lon > lon_west) & (lon < lon_east))
-
-        lon = lon[lon_index]
-
-        #Shape para la matriz de ceros
-        row = lat.shape[0]
-        col = lon.shape[0]
-
-        print('Finaliza recorte de sudamerica')
+        ######################################################        
         #Genero una matriz llena de ceros para completarla 
 
         print('Inicia creacion de matriz de ceros para: ',fecha_p_24)
@@ -153,7 +158,7 @@ for file in FileS:
         print('Inicia almacenamiento de la matriz: ',fecha_p_24)
 
         # Ruta completa del archivo donde guardar los datos
-        out_path = f'/home/fernando.huaranca/datosmunin3/GFS_24hs/GFS_R0.25_{fecha_p_24}.npz'
+        out_path = f'/home/fernando.huaranca/datosmunin3/GFS_24hs/GFS_R0.25_24hs_{fecha_p_24}.npz'
 
         # Guardar los arreglos en el archivo
         np.savez(out_path,pp_daily = pp, latitudes = lat,longitudes = lon,inicio_corrida=ref_time,forecast_24=fecha_p_24)
