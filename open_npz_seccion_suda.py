@@ -10,7 +10,7 @@ import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 
 #Directorio
-path = '/home/fernando.huaranca/datosmunin3/GFS_24hs/20-01-2016.npz'
+path = '/home/fernando.huaranca/datosmunin3/Gsmap_24hs/Gsmap_R0.1_24hs_2016-01-01.npz'
 
 #Cargamos el archivo
 datos = np.load(path)
@@ -25,33 +25,37 @@ for arreglo in datos.files:
 
 #Extraigo dimensiones de mi archivo
 pp = datos['pp_daily']
-lat = datos['latitudes']
-lon = datos['longitudes']
+lat = datos['latitudes'] -0.05 #solo para gsmap
+lon = datos['longitudes'] - 0.05 #solo para gsmap
 
 
 ##Seleccion area sudamerica
 
 #Latitudes y longitudes (box)
 
-lat_north = -0
-lat_south = -10.5
-lon_east = 295
-lon_west = 284.5
-
+lat_north = 15
+lat_south = -65
+lon_east = 330
+lon_west = 260
 #latitudes
-lat_index = np.flatnonzero((lat <lat_north) & (lat > lat_south))
+lat_index = np.flatnonzero((lat <=lat_north) & (lat >= lat_south))
 
 #longitudes
-lon_index = np.flatnonzero((lon > lon_west) & (lon < lon_east))
-
+lon_index = np.flatnonzero((lon >= lon_west) & (lon <= lon_east))
+print('aca ',lat_index[0])
+print('aca ',lat_index[-1])
 #Selecciona seccion de sudamerica
-suda = pp[lat_index[0]:lat_index[-1],lon_index[0]:lon_index[-1]]
+#El +1 se agrega debido a que 
+#matriz[inicio:fin+1,inicio:fin+1]
+#Se le esta pidiendo a la matriz que seleccione desde el elemento inicial hasta
+#el elemento final, pero el elemento final no lo toma
+suda = pp[lat_index[0]:lat_index[-1]+1,lon_index[0]:lon_index[-1]+1]
 lat = lat[lat_index]
 lon = lon[lon_index]
 print('Las dimensiones del array son: ',suda.shape)
 
 #Una vez abierto el archivo y extrayendo las dimensiones podemos plotearlo
-
+print(lat)
 ############################################################################################
 ################### GRAFICADO ################################################################
 
